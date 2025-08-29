@@ -39,6 +39,7 @@ There are several operators that we can use, we can try all of them to see which
 | OR | \|\| | %7c%7c |
 | Sub-Shell | `` | %60%60 |
 | Sub-Shell | $() | %24%28%29 |
+
 ![Testing background operator](./assets/background_operator.png "Tested background operator and encounter a valid vector attack")
 In this case with the Background `&` operator we got a response that is not detected as malicious, we can use that to inject or commands.
 
